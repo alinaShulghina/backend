@@ -23,12 +23,12 @@ public class ContactController {
     @Autowired
     ContactsRepo repo;
     private ArrayList<Contact> contacts;
-    private ArrayList<Contact> contactsToDB;
+    ArrayList<Contact> contactsToDB;
     @SuppressWarnings("unchecked")
     @RequestMapping(method = RequestMethod.GET)
     public @ResponseBody
     List<Contact> getByPattern (@RequestParam("nameFilter") final  String name ){
-        addDataToDB();
+       repo.save(addDataToDB());
        contacts = (ArrayList<Contact>) repo.findAll();
        Pattern pattern = Pattern.compile(name);
         ArrayList<Contact> result = new ArrayList<>();
@@ -40,7 +40,7 @@ public class ContactController {
     }
 
     //put values to database
-    private void addDataToDB(){
+    ArrayList<Contact> addDataToDB(){
         contactsToDB = new ArrayList<>();
         contactsToDB.add(new Contact("Alina"));
         contactsToDB.add(new Contact("Grace"));
@@ -52,6 +52,6 @@ public class ContactController {
         contactsToDB.add(new Contact("Andrew"));
         contactsToDB.add(new Contact("Jack"));
         contactsToDB.add(new Contact("Maria"));
-        repo.save(contactsToDB);
+        return contactsToDB;
     }
 }
